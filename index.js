@@ -14,22 +14,16 @@ const io = new Server(server, {
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
 
-  socket.on('join-room', (roomCode) => {
-    socket.join(roomCode);
-    socket.roomCode = roomCode;
-    console.log(`User ${socket.id} joined room ${roomCode}`);
+  socket.on('offer', (offer) => {
+    socket.broadcast.emit('offer', offer);
   });
 
-  socket.on('offer', ({ offer, roomCode }) => {
-    socket.to(roomCode).emit('offer', offer);
+  socket.on('answer', (answer) => {
+    socket.broadcast.emit('answer', answer);
   });
 
-  socket.on('answer', ({ answer, roomCode }) => {
-    socket.to(roomCode).emit('answer', answer);
-  });
-
-  socket.on('ice-candidate', ({ candidate, roomCode }) => {
-    socket.to(roomCode).emit('ice-candidate', candidate);
+  socket.on('ice-candidate', (candidate) => {
+    socket.broadcast.emit('ice-candidate', candidate);
   });
 });
 
