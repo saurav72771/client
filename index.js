@@ -19,6 +19,8 @@ io.on('connection', (socket) => {
     socket.roomCode = roomCode;
     console.log(`[ROOM] User ${socket.id} joined room ${roomCode}`);
     console.log(`[ROOM] Current rooms for ${socket.id}:`, Array.from(socket.rooms));
+    // Notify others in the room that a new user joined
+    socket.to(roomCode).emit('user-joined', { roomCode });
   });
 
   socket.on('offer', ({ offer, roomCode }) => {
