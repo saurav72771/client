@@ -41,6 +41,12 @@ io.on('connection', (socket) => {
     socket.to(roomCode).emit('ice-candidate', candidate);
     console.log(`[SIGNAL] ICE candidate emitted to room ${roomCode}`);
   });
+
+  socket.on('joiner-ready', ({ roomCode }) => {
+    console.log(`[SIGNAL] Joiner ready notification from ${socket.id} to room ${roomCode}`);
+    socket.to(roomCode).emit('joiner-ready');
+    console.log(`[SIGNAL] Joiner ready notification emitted to room ${roomCode}`);
+  });
 });
 
 server.listen(10000, () => {
